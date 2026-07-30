@@ -12,6 +12,8 @@ For the keystore you will need a cert with a private key that is the same as hav
 
 The Test file is just for testing and is not used anywhere.
 
+For local test make sure to comment `<exclude>keys/**</exclude>` in pom.xml
+
 ## Build
 
 Requirements are Maven (verified 3.6.3) and Java (verified openjdk 1.8.0_322).

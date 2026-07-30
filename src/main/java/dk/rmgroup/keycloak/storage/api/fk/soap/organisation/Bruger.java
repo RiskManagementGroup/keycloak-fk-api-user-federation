@@ -65,6 +65,11 @@ public class Bruger {
     int totalLength = 0;
     do {
       var response = soeg(organisationUuid, BigInteger.valueOf(totalLength));
+      if (response.getStandardRetur().getStatusKode().equals(BigInteger.valueOf(44))) {
+        break; // No more results
+      } else if (!response.getStandardRetur().getStatusKode().equals(BigInteger.valueOf(20))) {
+        throw new RuntimeException("Error in soeg response: " + response.getStandardRetur().getStatusKode() + " - " + response.getStandardRetur().getFejlbeskedTekst());
+      }
       totalLength += response.getIdListe().getUUIDIdentifikator().size();
       ids.addAll(response.getIdListe().getUUIDIdentifikator());
     } while (totalLength % 1000 == 0 && totalLength != 0);
