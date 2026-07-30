@@ -168,6 +168,14 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>keys/**</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <plugins>
             <!-- Generates classes from WSDL files -->
             <plugin>

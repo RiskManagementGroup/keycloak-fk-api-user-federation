@@ -12,10 +12,10 @@ public class ClientProperties {
 
     // Variables which MUST BE MODIFIED before running the code examples
 
-    private static final String KEYSTORE_FILENAME = "org.apache.ws.security.crypto.merlin.keystore.file";
-    private static final String KEYSTORE_PASSWORD = "org.apache.ws.security.crypto.merlin.keystore.password";
-    private static final String TRUSTSTORE_FILENAME = "org.apache.ws.security.crypto.merlin.truststore.file";
-    private static final String TRUSTSTORE_PASSWORD = "org.apache.ws.security.crypto.merlin.truststore.password";
+    private static final String KEYSTORE_FILENAME = "org.apache.wss4j.crypto.merlin.keystore.file";
+    private static final String KEYSTORE_PASSWORD = "org.apache.wss4j.crypto.merlin.keystore.password";
+    private static final String TRUSTSTORE_FILENAME = "org.apache.wss4j.crypto.merlin.truststore.file";
+    private static final String TRUSTSTORE_PASSWORD = "org.apache.wss4j.crypto.merlin.truststore.password";
 
     private static final String MYNDIGHED_CVR = "myndighedCvr";
 
