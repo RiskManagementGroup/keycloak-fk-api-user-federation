@@ -14,9 +14,17 @@ The Test file is just for testing and is not used anywhere.
 
 For local test make sure to comment `<exclude>keys/**</exclude>` in pom.xml
 
+Also make sure to update client.properties.
+`org.apache.wss4j.crypto.merlin.truststore.file` should be set to `keys/truststore.production.jks`
+
+You also need to set the passwords in there
+
 ## Build
 
 Requirements are Maven (verified 3.6.3) and Java (verified openjdk 1.8.0_322).
+
+You need to set the password for `org.apache.wss4j.crypto.merlin.keystore.password` in client.properties before you build.
+Also if you have tested make sure that pom.xml is back to how it was.
 
 To build a .jar file that can be used in Keycloak run the following command
 

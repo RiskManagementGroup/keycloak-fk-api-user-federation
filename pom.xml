@@ -6,7 +6,7 @@
 
     <groupId>dk.rmgroup.keycloak</groupId>
     <artifactId>fk-api-user-federation</artifactId>
-    <version>26.6.3</version>
+    <version>26.6.3-2</version>
 
     <name>fk-api-user-federation</name>
     <url>https://github.com/RiskManagementGroup/keycloak-fk-api-user-federation</url>
