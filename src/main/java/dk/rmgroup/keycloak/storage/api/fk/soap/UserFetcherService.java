@@ -155,6 +155,7 @@ public class UserFetcherService {
 
     for (FiltreretOejebliksbilledeType user : users) {
       String userName = "";
+      String email = "";
 
       try {
         var baseRegistration = user.getRegistrering().getFirst();
@@ -166,7 +167,6 @@ public class UserFetcherService {
             .filter(x -> emailFieldName.equals(x.getRolle().getLabel())).findFirst()
             .<String>map(x -> x.getReferenceID().getUUIDIdentifikator()).orElse(null);
         String mobile = "";
-        String email = "";
 
         if (attributeMobileId != null && !attributeMobileId.isEmpty()) {
           mobile = addressResponse.getFiltreretOejebliksbillede().stream()
@@ -196,9 +196,13 @@ public class UserFetcherService {
                     .getNavnTekst())
             .orElse(null);
 
-        simpleUsers.add(new SimpleUser(userName, mobile, email, personName));
+        if (email == null || email.isEmpty()) {
+          continue;
+        }
+
+        simpleUsers.add(new SimpleUser(email, mobile, email, personName));
       } catch (Exception ex) {
-        LOGGER.error("Error processing user: " + userName, ex);
+        LOGGER.error("Error processing user: " + userName + " " + email, ex);
       }
     }
 
