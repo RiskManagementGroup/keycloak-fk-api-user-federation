@@ -22,14 +22,10 @@ import org.apache.cxf.ws.security.trust.STSUtils;
 import org.apache.wss4j.common.crypto.Crypto;
 import org.w3c.dom.Element;
 
-import dk.rmgroup.keycloak.storage.api.fk.soap.utils.ClientProperties;
-
 /**
  * This class defines the client for getting a token from the token service.
  */
 public class StsClient extends STSClient {
-
-    private String cvr;
 
     public StsClient(final Bus bus) {
         super(bus);
@@ -229,10 +225,11 @@ public class StsClient extends STSClient {
     }
 
     private String getCvr() {
-        if (cvr == null) {
-            cvr = ClientProperties.getInstance().getMyndighedCvr();
+        String currentCvr = StsCvrContext.getCurrentCvr();
+        if (currentCvr != null && !currentCvr.isBlank()) {
+            return currentCvr;
         }
 
-        return cvr;
+        throw new IllegalStateException("No CVR available for STS claim. Set CVR in StsCvrContext before SOAP call.");
     }
 }

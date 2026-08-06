@@ -17,8 +17,6 @@ public class ClientProperties {
     private static final String TRUSTSTORE_FILENAME = "org.apache.wss4j.crypto.merlin.truststore.file";
     private static final String TRUSTSTORE_PASSWORD = "org.apache.wss4j.crypto.merlin.truststore.password";
 
-    private static final String MYNDIGHED_CVR = "myndighedCvr";
-
     // Variables for endpoints - CAN be modified
 
     private static final String SAGDOKUMENT_INDEKS_ENDPOINT_URL = "sagdokumentIndeksEndpointUrl";
@@ -79,14 +77,6 @@ public class ClientProperties {
 
     public String getTruststorePassword() {
         return properties.getProperty(TRUSTSTORE_PASSWORD);
-    }
-
-    public String getMyndighedCvr() {
-        return properties.getProperty(MYNDIGHED_CVR);
-    }
-
-    public void setMyndighedCvr(String myndighedCvr) {
-        properties.setProperty(MYNDIGHED_CVR, myndighedCvr);
     }
 
     public String getSagdokumentIndeksEndpointUrl() {

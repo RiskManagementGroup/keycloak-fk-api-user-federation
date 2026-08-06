@@ -1,5 +1,7 @@
 package dk.rmgroup.keycloak.storage.api.fk.soap.organisation;
 
+import java.math.BigInteger;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +59,11 @@ public class Virksomhed {
     public String getVirksomhedUuid(String myndighedcvr) {
 
         var soegOutput = soeg(myndighedcvr);
+
+        if (!soegOutput.getStandardRetur().getStatusKode().equals(BigInteger.valueOf(20)))
+        {
+            throw new RuntimeException("Error in soeg response for virksomhed: " + soegOutput.getStandardRetur().getStatusKode() + " - " + soegOutput.getStandardRetur().getFejlbeskedTekst());
+        }
 
         var virksomhedUuidList = soegOutput.getIdListe();
 

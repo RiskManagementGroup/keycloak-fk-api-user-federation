@@ -40,7 +40,6 @@ import com.google.common.base.Strings;
 
 import dk.rmgroup.keycloak.storage.api.fk.soap.SimpleUser;
 import dk.rmgroup.keycloak.storage.api.fk.soap.UserFetcherService;
-import dk.rmgroup.keycloak.storage.api.fk.soap.utils.ClientProperties;
 import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_ALLOW_UPDATE_UPN_DOMAINS;
 import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_CVR_NUMBER;
 import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_DO_NOT_OVERRIDE_MOBILE_WITH_EMPTY;
@@ -212,11 +211,7 @@ public class FkApiUserStorageProviderFactory
 
   private SynchronizationResult syncImpl(KeycloakSessionFactory sessionFactory, String realmId,
       UserStorageProviderModel model) {
-    ClientProperties clientProperties = ClientProperties.getInstance();
-
     String cvrNumber = model.get(CONFIG_KEY_CVR_NUMBER);
-
-    clientProperties.setMyndighedCvr(cvrNumber);
 
     String emailFieldName = model.get(CONFIG_KEY_EMAIL_FIELD_NAME, "Bruger.Adresse.email");
     String mobileFieldName = model.get(CONFIG_KEY_MOBILE_FIELD_NAME, "Bruger.Adresse.Telefon");
