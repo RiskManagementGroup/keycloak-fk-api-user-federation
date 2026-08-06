@@ -39,8 +39,6 @@ public class Test {
     System.setProperty("javax.net.ssl.trustStore", trustStoreFile);
     System.setProperty("javax.net.ssl.trustStorePassword", clientProperties.getTruststorePassword());
 
-    clientProperties.setMyndighedCvr("29189676");
-
     Organisation organisation = Organisation.getOrganisation();
     Virksomhed virksomhed = Virksomhed.getVirksomhed();
     Bruger bruger = Bruger.getBruger();
@@ -56,7 +54,7 @@ public class Test {
       if ("exit".equalsIgnoreCase(input)) {
         run = false;
       } else if ("test".equalsIgnoreCase(input)) {
-        var organisationResponse = organisation.getOrganisationByCvr("18957981");
+        var organisationResponse = organisation.getOrganisationByCvr("29188475");
         var userResponse = bruger.soeg(organisationResponse[1]);
         var listResponse = bruger.list(userResponse);
         var personUuids = listResponse.getFiltreretOejebliksbillede().stream()
@@ -208,19 +206,26 @@ public class Test {
         var test2 = "test";
 
       } else if ("test4".equalsIgnoreCase(input)) {
-        var fetcher = new UserFetcherService("29189676", "Bruger.Adresse.email", "Bruger.Adresse.Telefon");
+        var fetcher = new UserFetcherService("29188475", "Bruger.Adresse.email", "Bruger.Adresse.Telefon");
+        var fetcher2 = new UserFetcherService("18957981", "Bruger.Adresse.email", "Bruger.Adresse.Telefon");
         var unitNames = new ArrayList<String>();
         //unitNames.add("Gåsetårnskolen Iselinge Indskoling");
         unitNames.add("5d029ecb-93a9-4bb4-9e48-c38cc7b9ce7f");
 
-        var unitMap = fetcher.getUnitMap(unitNames);
+        //var unitMap = fetcher.getUnitMap(unitNames);
 
         //var users = fetcher.fetchUsersInUnit(unitNames);
+
+        var users = fetcher.fetchAllUsers();
+        var users2 = fetcher2.fetchAllUsers();
 
         // users.forEach(u -> {
         //   System.out.println("User: " + u.getUserName() + ", Mobile: " + u.getMobile() + ", Email: " + u.getEmail()
         //       + ", Person Name: " + u.getPersonName());
         // });
+
+        System.out.println("Users from CVR 29188475: " + users.size());
+        System.out.println("Users from CVR 18957981: " + users2.size());
 
         var test = "ts";
 
