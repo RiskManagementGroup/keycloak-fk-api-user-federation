@@ -40,15 +40,17 @@ import com.google.common.base.Strings;
 
 import dk.rmgroup.keycloak.storage.api.fk.soap.SimpleUser;
 import dk.rmgroup.keycloak.storage.api.fk.soap.UserFetcherService;
-import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_ALLOW_UPDATE_UPN_DOMAINS;
-import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_CVR_NUMBER;
-import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_DO_NOT_OVERRIDE_MOBILE_WITH_EMPTY;
-import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_EMAIL_FIELD_NAME;
-import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_GROUPS_FOR_USERS_NOT_IN_MAPPED_GROUPS;
-import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_GROUP_MAP;
-import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_IMPORT_USERS_NOT_IN_MAPPED_GROUPS;
-import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_MOBILE_FIELD_NAME;
-import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProvideConstants.CONFIG_KEY_ONLY_USE_GROUPS_IN_GROUP_MAP;
+import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProviderConstants.CONFIG_KEY_ALLOW_UPDATE_UPN_DOMAINS;
+import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProviderConstants.CONFIG_KEY_CVR_NUMBER;
+import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProviderConstants.CONFIG_KEY_DO_NOT_OVERRIDE_MOBILE_WITH_EMPTY;
+import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProviderConstants.CONFIG_KEY_EMAIL_FIELD_NAME;
+import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProviderConstants.CONFIG_KEY_ENABLE_FULL_SYNC_WITH_SPECIFIC_TIME;
+import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProviderConstants.CONFIG_KEY_FULL_SYNC_SPECIFIC_TIME;
+import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProviderConstants.CONFIG_KEY_GROUPS_FOR_USERS_NOT_IN_MAPPED_GROUPS;
+import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProviderConstants.CONFIG_KEY_GROUP_MAP;
+import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProviderConstants.CONFIG_KEY_IMPORT_USERS_NOT_IN_MAPPED_GROUPS;
+import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProviderConstants.CONFIG_KEY_MOBILE_FIELD_NAME;
+import static dk.rmgroup.keycloak.storage.api.fk.userfederation.FkApiUserStorageProviderConstants.CONFIG_KEY_ONLY_USE_GROUPS_IN_GROUP_MAP;
 
 public class FkApiUserStorageProviderFactory
     implements UserStorageProviderFactory<FkApiUserStorageProvider>, ImportSynchronization {
@@ -123,7 +125,27 @@ public class FkApiUserStorageProviderFactory
         .type(ProviderConfigProperty.BOOLEAN_TYPE)
         .helpText("If enabled, the mobile phone number will not be overridden if the new value is empty.")
         .add()
+        .property()
+        .name(CONFIG_KEY_ENABLE_FULL_SYNC_WITH_SPECIFIC_TIME)
+        .label("Enable full sync with specific time")
+        .type(ProviderConfigProperty.BOOLEAN_TYPE)
+        .helpText("If enabled, a full synchronization will be performed at the specified time.")
+        .add()
+        .property()
+        .name(CONFIG_KEY_FULL_SYNC_SPECIFIC_TIME)
+        .label("Full sync specific time cron string")
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .helpText(
+            "Specify the time at which a full synchronization should be performed. Use a cron string format. Default is set to 2 at night every day. The first number is the seconds. The second number is the minutes. The third number is the hours. The remaining numbers represent the day of the month, month, and day of the week respectively. '*' means any value for that field. A '/' indicates increments for that field. You can see examples in https://crontab.guru/ or https://devhints.io/cron. Just remember to add a 0 for the seconds since they do not have secounds.")
+        .defaultValue("0 0 2 */1 * *")
+        .add()
         .build();
+  }
+
+  @Override
+  public void postInit(KeycloakSessionFactory factory) {
+    FkApiUserStorageEventListener fkApiUserStorageEventListener = new FkApiUserStorageEventListener(factory);
+    factory.register(fkApiUserStorageEventListener);
   }
 
   @Override

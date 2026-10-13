@@ -1,6 +1,6 @@
 package dk.rmgroup.keycloak.storage.api.fk.userfederation;
 
-public final class FkApiUserStorageProvideConstants {
+public final class FkApiUserStorageProviderConstants {
     public static final String CONFIG_KEY_ALLOW_UPDATE_UPN_DOMAINS = "allowUpdateUpnDomains";
     public static final String CONFIG_KEY_GROUP_MAP = "groupMap";
     public static final String CONFIG_KEY_ONLY_USE_GROUPS_IN_GROUP_MAP = "onlyUseGroupsInGroupMap";
@@ -10,4 +10,6 @@ public final class FkApiUserStorageProvideConstants {
     public static final String CONFIG_KEY_IMPORT_USERS_NOT_IN_MAPPED_GROUPS = "importUsersNotInMappedGroups";
     public static final String CONFIG_KEY_EMAIL_FIELD_NAME = "emailFieldName";
     public static final String CONFIG_KEY_MOBILE_FIELD_NAME = "mobileFieldName";
+    public static final String CONFIG_KEY_ENABLE_FULL_SYNC_WITH_SPECIFIC_TIME = "enableFullSyncWithSpecificTime";
+    public static final String CONFIG_KEY_FULL_SYNC_SPECIFIC_TIME = "fullSyncSpecificTime";
 }
