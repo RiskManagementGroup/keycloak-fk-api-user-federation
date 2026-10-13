@@ -35,6 +35,7 @@ import org.keycloak.storage.UserStorageProviderFactory;
 import org.keycloak.storage.UserStorageProviderModel;
 import org.keycloak.storage.user.ImportSynchronization;
 import org.keycloak.storage.user.SynchronizationResult;
+import org.springframework.scheduling.support.CronExpression;
 
 import com.google.common.base.Strings;
 
@@ -180,6 +181,28 @@ public class FkApiUserStorageProviderFactory
       throws ComponentValidationException {
     if (!config.contains(CONFIG_KEY_CVR_NUMBER)) {
       throw new ComponentValidationException("CVR number is required!");
+    }
+    if (config.get(CONFIG_KEY_ENABLE_FULL_SYNC_WITH_SPECIFIC_TIME, false) && !config.contains(CONFIG_KEY_FULL_SYNC_SPECIFIC_TIME)) {
+      throw new ComponentValidationException("Full sync specific time is required when full sync with specific time is enabled!");
+    }
+
+    if (config.get(CONFIG_KEY_ENABLE_FULL_SYNC_WITH_SPECIFIC_TIME, false) && config.contains(CONFIG_KEY_FULL_SYNC_SPECIFIC_TIME)) {
+      String fullSyncSpecificTime = config.get(CONFIG_KEY_FULL_SYNC_SPECIFIC_TIME);
+      if (fullSyncSpecificTime == null || fullSyncSpecificTime.isEmpty()) {
+        throw new ComponentValidationException("Full sync specific time must be specified when full sync with specific time is enabled!");
+      }
+
+      if (!CronExpression.isValidExpression(fullSyncSpecificTime)) {
+        throw new ComponentValidationException("Full sync specific time must be a valid cron expression!");
+      }
+    }
+
+    if (!"-1".equals(config.get("fullSyncPeriod", "")) && config.get(CONFIG_KEY_ENABLE_FULL_SYNC_WITH_SPECIFIC_TIME, false)){
+      throw new ComponentValidationException("Cannot enable both periodic full sync and full sync with specific time simultaneously!");
+    }
+
+    if (!"-1".equals(config.get("changedSyncPeriod", "")) && config.get(CONFIG_KEY_ENABLE_FULL_SYNC_WITH_SPECIFIC_TIME, false)) {
+      throw new ComponentValidationException("Cannot enable both periodic changed users sync and full sync with specific time simultaneously!");
     }
 
     GroupMapConfig groupMapConfig = getGroupMapConfig(session, realm, config);
